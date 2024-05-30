@@ -404,4 +404,4 @@ Databases are essential for managing data efficiently and effectively. They enab
   
   SELECT order_info->>'customer' AS customer FROM orders;
   ```
-# database-tutorials
+
