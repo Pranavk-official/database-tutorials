@@ -1,3 +1,252 @@
+# Topics
+
+Here are the categorized topics:
+
+### SQL: Postgres
+- Forks
+- Client/server model
+- Data types Unique to Postgres
+  - interval
+  - point
+  - bigserial
+  - etc…
+- Database cluster
+
+### Theory
+- SQL vs NoSQL (Relational vs non-relational)
+- Web-scaled
+- When to use SQL and NoSQL
+- Expression, Statement, Operators
+
+### Data Types SQL
+- null, bit
+- int, real / float
+- char, varchar, text
+- boolean
+- date, datetime, timestamp
+- xml/json
+  - char vs varchar vs text
+  - datetime vs timestamp
+  - JSON vs JSONB
+
+### Operators
+- Arithmetic, Logical, Comparison, Bitwise
+
+### Primitives
+- Integer, Numeric, String, Boolean
+
+### Structured
+- Date/Time, Array, Range / Multirange, UUID
+
+### Document
+- JSON/JSONB, XML, Key-value (Hstore)
+
+### Geometry
+- Point, Line, Circle, Polygon
+
+### Customizations
+- Composite, Custom Types
+
+### Constraints
+- UNIQUE
+- NOT NULL
+- PRIMARY KEY as UUID
+- FOREIGN KEY
+- CHECK (<condition>)
+- Adding & removing constraints after creating table
+
+### Commands
+- List db
+- Connect
+- List tables
+- Move to super
+- List specific table
+- List current table
+- Creating
+  - Database
+  - Table
+  - Drop
+  - Drop DB
+  - Drop Table
+  - Drop constraints
+- Database migration
+  - Add, Delete, Migration
+  - Up migration
+  - Down migration
+
+### Functions
+- SELECT
+- LIMIT
+- FETCH
+- OFFSET
+- AS
+- DISTINCT
+- GROUP BY
+- HAVING
+- GROUPING SETS
+- ROLLUP
+- CUBE
+- Having vs Where
+- Limit vs Fetch
+- FROM
+- WHERE
+- AND, OR
+- LIKE, ILIKE
+- BETWEEN
+- IN
+- IS NULL, IS NOT NULL
+- ORDER BY
+- DESC, ASC
+- DELETE
+- DELETING FOREIGN KEY
+- CASCADE
+- UPDATE
+- SET
+- RENAME COLUMN
+- JOIN
+  - INNER JOIN
+  - ON 
+  - LEFT JOIN
+  - RIGHT JOIN
+  - FULL JOIN (FULL OUTER JOIN)
+  - SELF JOIN
+  - CROSS JOIN
+  - NATURAL JOIN
+
+### Views
+- Pros and Cons
+- CREATE VIEW
+- Materialized View
+
+### Write Amplification
+- UNION
+- COALESCE
+- NULLIF
+
+### Index
+- Multi index
+- AUTO_INCREMENT
+- ON CONFLICT
+  - DO NOTHING
+  - Upserting
+    - DO UPDATE
+  - EXCLUDED
+
+### Date Functions
+- INTERVAL vs AGE
+
+### Aggregate Functions
+- AVG, MIN, MAX, SUM, ROUND, COUNT, CONCAT
+
+### Scalar Functions
+- LCASE, CASE, LEN, MID, ROUND, NOW, FORMAT
+- INITCAP, LEFT, RIGHT, CONCAT, ABS, CEIL, FLOOR
+- UPPER AND LOWER in psql.
+
+### Aggregate vs Scalar
+
+### Window Function
+- OVER
+  - PARTITION BY, RANK, LEAD, LAG
+
+### CASE
+
+### SQL Commands
+- DDL
+  - CREATE, ALTER, DROP, TRUNCATE
+  - DROP vs TRUNCATE
+- DML
+  - INSERT, SELECT, UPDATE, DELETE
+- DCL
+  - GRANT, REVOKE
+- TCL
+  - COMMIT
+  - ROLLBACK
+  - SAVE POINT
+- DQL
+  - SELECT
+
+### 3-Schema Architecture
+- Internal level
+- Conceptual level
+- External level
+
+### BIGINT VS BIGSERIAL
+
+### Combining Queries
+- UNION, UNION ALL
+- INTERSECT, INTERSECT ALL
+- EXCEPT, EXCEPT ALL
+
+### Normalization
+- Levels
+  - 1NF, 2NF, 3NF etc..
+  - BCNF
+- Anomalies
+  - Insertion anomalies
+  - Deletion anomalies
+  - Updation anomalies
+- Data redundancy
+- Missing data
+- Losing data
+- Inconsistency
+- Updating values on so many records unnecessarily
+
+### Relationship
+- One to one
+- One to many
+- Many to many
+
+### Transaction & ACID
+- Transaction
+  - COMMIT
+  - ROLLBACK
+  - SAVE POINT
+  - RELEASE SAVEPOINT
+  - LOCK
+    - Exclusive Locks (X-Locks)
+    - Shared Locks (S-Locks)
+    - Update Locks (U-Locks)
+    - Intent Locks
+    - Read and Write Locks
+- ACID
+  - Atomicity 
+  - Consistency
+    - Consistency in data
+    - Consistency in reads
+  - Isolation
+    - Read phenomena
+      - Dirty reads
+      - Non-repeatable reads
+      - Phantom reads
+    - Serializations
+      - (Lost updates)
+    - Isolation level
+      - Read uncommitted
+      - Read committed
+      - Repeatable Reads
+      - Transactions are Serialized
+  - Durability
+- How to implement ACID properties
+- EXPLAIN
+  - Heap Scan
+  - Parallel Scan
+- Planner
+
+### Other Theory and Functions
+- COPY
+- OLTP
+- MUCC
+- Pendings
+- Delete vs truncate
+- Candidate key vs super key
+- Stored procedure
+- ER diagram.
+- Practice nested queries.
+
+---
+
+
 # Databases Overview
 
 ## Introduction
@@ -404,4 +653,412 @@ Databases are essential for managing data efficiently and effectively. They enab
   
   SELECT order_info->>'customer' AS customer FROM orders;
   ```
+
+---
+
+### Write Amplification
+
+**1. UNION**
+
+The UNION operator is used to combine the result sets of two or more SELECT statements into a single result set.
+
+**Syntax:**
+```sql
+SELECT column1 FROM table1
+UNION
+SELECT column2 FROM table2;
+```
+
+**Example:**
+```sql
+SELECT employee_name FROM employees
+UNION
+SELECT customer_name FROM customers;
+```
+
+**2. COALESCE**
+
+The COALESCE function is used to return the first non-null expression among its arguments.
+
+**Syntax:**
+```sql
+COALESCE(expression1, expression2, ...);
+```
+
+**Example:**
+```sql
+SELECT COALESCE(NULL, 'default value');
+```
+
+**3. NULLIF**
+
+The NULLIF function is used to return null if the two expressions are equal; otherwise, it returns the first expression.
+
+**Syntax:**
+```sql
+NULLIF(expression1, expression2);
+```
+
+**Example:**
+```sql
+SELECT NULLIF(10, 10);
+```
+
+### Index
+
+**1. Multi index**
+
+A multi-column index is an index on multiple columns in a table. It allows for efficient retrieval of data based on multiple criteria.
+
+**Syntax (Creation):**
+```sql
+CREATE INDEX index_name ON table_name (column1, column2, ...);
+```
+
+**Example:**
+```sql
+CREATE INDEX idx_name_age ON employees (name, age);
+```
+
+**2. AUTO_INCREMENT**
+
+AUTO_INCREMENT is a feature in some database systems that automatically generates a unique value for a column whenever a new row is inserted into a table.
+
+**Syntax (Creation):**
+```sql
+CREATE TABLE table_name (
+    id SERIAL PRIMARY KEY,
+    column1 datatype,
+    ...
+);
+```
+
+**3. ON CONFLICT**
+
+ON CONFLICT clause is used with INSERT statements to handle conflicts arising from unique constraints.
+
+**Syntax:**
+```sql
+INSERT INTO table_name (column1, column2, ...)
+VALUES (value1, value2, ...)
+ON CONFLICT (constraint_column)
+DO NOTHING;
+```
+
+**Example:**
+```sql
+INSERT INTO employees (id, name)
+VALUES (1, 'John')
+ON CONFLICT (id)
+DO NOTHING;
+```
+
+**4. Upserting**
+
+Upserting is the process of updating a row if it exists, or inserting it if it doesn't.
+
+**Syntax:**
+```sql
+INSERT INTO table_name (column1, column2, ...)
+VALUES (value1, value2, ...)
+ON CONFLICT (constraint_column)
+DO UPDATE SET column1 = value1, column2 = value2;
+```
+
+**Example:**
+```sql
+INSERT INTO employees (id, name)
+VALUES (1, 'John')
+ON CONFLICT (id)
+DO UPDATE SET name = 'John';
+```
+
+**5. EXCLUDED**
+
+The EXCLUDED table contains values for columns that would have been inserted had there been no conflict.
+
+### Date Functions
+
+**1. INTERVAL vs AGE**
+
+- INTERVAL is used to perform date arithmetic and manipulate intervals (such as adding days or months to a date).
+- AGE is used to calculate the difference between two dates and returns the result as an interval.
+
+**Syntax (INTERVAL):**
+```sql
+SELECT current_date + INTERVAL '1 day';
+```
+
+**Syntax (AGE):**
+```sql
+SELECT AGE('2022-01-01', '2020-01-01');
+```
+
+### Aggregate Functions
+
+**1. AVG, MIN, MAX, SUM, ROUND, COUNT, CONCAT**
+
+- AVG: Calculates the average value of a set of values.
+- MIN: Returns the minimum value in a set of values.
+- MAX: Returns the maximum value in a set of values.
+- SUM: Calculates the sum of a set of values.
+- ROUND: Rounds a numeric value to a specified number of decimal places.
+- COUNT: Returns the number of rows in a result set.
+- CONCAT: Concatenates two or more strings.
+
+**Syntax (Example):**
+```sql
+SELECT AVG(salary), MIN(salary), MAX(salary), SUM(salary), ROUND(salary, 2), COUNT(*), CONCAT(first_name, ' ', last_name)
+FROM employees;
+```
+
+### Scalar Functions
+
+**1. LCASE, CASE, LEN, MID, ROUND, NOW, FORMAT, INITCAP, LEFT, RIGHT, CONCAT, ABS, CEIL, FLOOR**
+
+- LCASE: Converts a string to lowercase.
+- CASE: Evaluates a set of conditions and returns a result.
+- LEN: Returns the length of a string.
+- MID: Returns a substring from a string.
+- ROUND: Rounds a numeric value to a specified number of decimal places.
+- NOW: Returns the current date and time.
+- FORMAT: Formats a value based on a specified format pattern.
+- INITCAP: Capitalizes the first letter of each word in a string.
+- LEFT: Returns the leftmost characters of a string.
+- RIGHT: Returns the rightmost characters of a string.
+- CONCAT: Concatenates two or more strings.
+- ABS: Returns the absolute value of a number.
+- CEIL: Returns the smallest integer greater than or equal to a number.
+- FLOOR: Returns the largest integer less than or equal to a number.
+
+**Syntax (Example):**
+```sql
+SELECT LCASE('HELLO'), CASE WHEN age > 18 THEN 'Adult' ELSE 'Minor' END, LEN('hello'), MID('hello', 2, 3), ROUND(10.567, 2), NOW(), FORMAT(123456.789, 'C', 'en-us'), INITCAP('hello world'), LEFT('hello', 3), RIGHT('hello', 3), CONCAT(first_name, ' ', last_name), ABS(-10), CEIL(10.5), FLOOR(10.5)
+FROM employees;
+```
+
+### Aggregate vs Scalar
+
+Aggregate functions perform calculations on a set of values and return a single value, while scalar functions operate on individual values and return a single value. Aggregate functions are typically used with GROUP BY clauses to calculate summary statistics for groups of rows, while scalar functions are applied to individual rows or values.
+
+
+---
+
+
+Here's an explanation of each item related to SQL/psql views:
+
+### Pros and Cons of Views
+
+#### Pros:
+1. **Data Abstraction**: Views can hide the complexity of underlying tables and provide a simplified view of the data to users.
+2. **Security**: Views can restrict access to certain columns or rows, providing a level of security by limiting what data users can see.
+3. **Performance**: Views can improve query performance by pre-computing complex joins or aggregations and storing them as a virtual table.
+4. **Code Reusability**: Views allow commonly used queries to be encapsulated and reused across multiple parts of an application.
+5. **Data Integrity**: Views can enforce business rules and constraints, ensuring that data is consistent and valid.
+
+#### Cons:
+1. **Resource Overhead**: Materialized views can consume storage space and computing resources, especially for large datasets or complex queries.
+2. **Data Staleness**: Materialized views may become stale over time if not refreshed regularly, leading to outdated or incorrect results.
+3. **Maintenance Overhead**: Views may require additional maintenance effort, especially if underlying table structures change frequently.
+4. **Performance Overhead**: Certain operations on views, such as joins or aggregations, may incur performance overhead compared to querying raw tables directly.
+5. **Complexity**: Views can introduce additional complexity to the database schema, making it harder to understand and maintain over time.
+
+### CREATE VIEW
+
+The CREATE VIEW statement is used to create a virtual table based on the result set of a SELECT query. Views can be used to simplify complex queries, enforce security policies, and provide a reusable abstraction layer over the underlying data.
+
+**Syntax:**
+```sql
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+**Example:**
+```sql
+CREATE VIEW employee_view AS
+SELECT emp_id, emp_name, department
+FROM employees
+WHERE department = 'IT';
+```
+
+### Materialized View
+
+A materialized view is a type of database object that stores the result set of a query as a physical table. Unlike regular views, materialized views persist the data on disk, allowing for faster access and improved query performance. However, materialized views need to be refreshed periodically to ensure that they reflect the latest changes in the underlying data.
+
+**Syntax (PostgreSQL):**
+```sql
+CREATE MATERIALIZED VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+**Example:**
+```sql
+CREATE MATERIALIZED VIEW sales_summary AS
+SELECT date_trunc('month', order_date) AS month,
+       SUM(total_sales) AS total_sales
+FROM orders
+GROUP BY date_trunc('month', order_date);
+```
+
+Materialized views can be refreshed using the REFRESH MATERIALIZED VIEW statement:
+```sql
+REFRESH MATERIALIZED VIEW view_name;
+```
+
+Materialized views offer improved query performance for frequently accessed or computationally expensive queries, but they come with the trade-off of potentially stale data and additional maintenance overhead. Therefore, it's important to carefully consider the use cases and performance requirements before creating materialized views in a database.
+
+
+---
+
+
+Here's an explanation of each function mentioned:
+
+### Functions
+
+1. **SELECT**: Used to retrieve data from a database table.
+   ```sql
+   SELECT column1, column2 FROM table_name;
+   ```
+
+2. **LIMIT**: Limits the number of rows returned in a result set.
+   ```sql
+   SELECT column1, column2 FROM table_name LIMIT 10;
+   ```
+
+3. **FETCH**: Similar to LIMIT, but allows for more flexibility, especially when combined with OFFSET.
+   ```sql
+   FETCH 5 FROM cursor_name;
+   ```
+
+4. **OFFSET**: Specifies how many rows to skip before starting to return rows from the query.
+   ```sql
+   OFFSET 10;
+   ```
+
+5. **AS**: Renames a column or table with an alias.
+   ```sql
+   SELECT column_name AS alias_name FROM table_name;
+   ```
+
+6. **DISTINCT**: Filters duplicate rows from the result set.
+   ```sql
+   SELECT DISTINCT column1 FROM table_name;
+   ```
+
+7. **GROUP BY**: Groups rows that have the same values into summary rows.
+   ```sql
+   SELECT COUNT(*), column1 FROM table_name GROUP BY column1;
+   ```
+
+8. **HAVING**: Specifies a search condition for a group or an aggregate function.
+   ```sql
+   SELECT COUNT(*), column1 FROM table_name GROUP BY column1 HAVING COUNT(*) > 1;
+   ```
+
+9. **GROUPING SETS**: Provides a way to specify multiple grouping sets in the GROUP BY clause of a SELECT statement.
+   ```sql
+   SELECT column1, column2 FROM table_name GROUP BY GROUPING SETS ((column1), (column2));
+   ```
+
+10. **ROLLUP**: Generates subtotals for the data, along with the grand total.
+    ```sql
+    SELECT column1, column2, SUM(column3) FROM table_name GROUP BY ROLLUP (column1, column2);
+    ```
+
+11. **CUBE**: Generates all possible subtotals.
+    ```sql
+    SELECT column1, column2, SUM(column3) FROM table_name GROUP BY CUBE (column1, column2);
+    ```
+
+12. **Having vs Where**: WHERE is used to filter rows before any groupings are made, while HAVING is used to filter rows after the grouping has been done.
+    
+13. **Limit vs Fetch**: LIMIT is used to limit the number of rows returned, while FETCH is used to retrieve a specific number of rows.
+
+14. **FROM**: Specifies the tables from which to retrieve data.
+    ```sql
+    SELECT column1 FROM table_name;
+    ```
+
+15. **WHERE**: Filters the rows based on specified conditions.
+    ```sql
+    SELECT column1 FROM table_name WHERE condition;
+    ```
+
+16. **AND, OR**: Logical operators used to combine multiple conditions.
+    ```sql
+    SELECT column1 FROM table_name WHERE condition1 AND condition2;
+    ```
+
+17. **LIKE, ILIKE**: Used to search for a specified pattern in a column.
+    ```sql
+    SELECT column1 FROM table_name WHERE column2 LIKE '%pattern%';
+    ```
+
+18. **BETWEEN**: Selects values within a range.
+    ```sql
+    SELECT column1 FROM table_name WHERE column2 BETWEEN value1 AND value2;
+    ```
+
+19. **IN**: Specifies multiple values for a column.
+    ```sql
+    SELECT column1 FROM table_name WHERE column2 IN (value1, value2, ...);
+    ```
+
+20. **IS NULL, IS NOT NULL**: Tests whether a column contains NULL values.
+    ```sql
+    SELECT column1 FROM table_name WHERE column2 IS NULL;
+    ```
+
+21. **ORDER BY**: Sorts the result set in ascending or descending order.
+    ```sql
+    SELECT column1 FROM table_name ORDER BY column2 DESC;
+    ```
+
+22. **DELETE**: Removes rows from a table based on specified conditions.
+    ```sql
+    DELETE FROM table_name WHERE condition;
+    ```
+
+23. **DELETING FOREIGN KEY**: Deleting a foreign key constraint from a table.
+    ```sql
+    ALTER TABLE table_name DROP CONSTRAINT constraint_name;
+    ```
+
+24. **CASCADE**: Specifies that the effect of a data modification also affects data with a related foreign key constraint.
+    ```sql
+    DELETE FROM table_name WHERE condition CASCADE;
+    ```
+
+25. **UPDATE**: Modifies existing records in a table.
+    ```sql
+    UPDATE table_name SET column1 = value1 WHERE condition;
+    ```
+
+26. **SET**: Assigns new values to columns in an UPDATE statement.
+    ```sql
+    UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition;
+    ```
+
+27. **RENAME COLUMN**: Renames a column in a table.
+    ```sql
+    ALTER TABLE table_name RENAME COLUMN old_column TO new_column;
+    ```
+
+28. **JOIN**: Combines records from two or more tables.
+    - **INNER JOIN**: Returns records that have matching values in both tables.
+    - **LEFT JOIN**: Returns all records from the left table, and the matched records from the right table.
+    - **RIGHT JOIN**: Returns all records from the right table, and the matched records from the left table.
+    - **FULL JOIN (FULL OUTER JOIN)**: Returns all records when there is a match in either left or right table.
+    - **SELF JOIN**: Joins a table to itself.
+    - **CROSS JOIN**: Returns the Cartesian product of the two tables.
+    - **NATURAL JOIN**: Joins two tables based on the equality of all columns with the same name in both tables.
+    ```sql
+    SELECT * FROM table1 JOIN table2 ON table1.column = table2.column;
+    ```
+
+---
 
